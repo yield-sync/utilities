@@ -11,7 +11,7 @@ const stageContracts = async () => {
 	const yieldSyncV1UtilityArray: Contract = await (await YieldSyncV1UtilityArray.deploy()).deployed();
 
 	return {
-		yieldSyncV1UtilityArray,
+		yieldSyncV1UtilityArray
 	};
 }
 
@@ -34,11 +34,12 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 				const [ADDR_1] = await ethers.getSigners();
 
 				let result = await yieldSyncV1UtilityArray.quickSort(
-					[ADDR_1.address, ethers.constants.AddressZero]
+					[ADDR_1.address, ADDR_1.address, ethers.constants.AddressZero]
 				);
 
 				expect(result[0]).to.be.equal(ethers.constants.AddressZero);
 				expect(result[1]).to.be.equal(ADDR_1.address);
+				expect(result[2]).to.be.equal(ADDR_1.address);
 			}
 		);
 	});
@@ -49,24 +50,31 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 			async () => {
 				const [ADDR_1] = await ethers.getSigners();
 
-				await yieldSyncV1UtilityArray.containsDuplicates(
-					[ADDR_1.address, ADDR_1.address]
-				);
+				await yieldSyncV1UtilityArray.containsDuplicates([ADDR_1.address, ADDR_1.address]);
 
 				expect(await yieldSyncV1UtilityArray.duplicateFound()).to.be.equal(true);
 			}
 		);
+
+		it(
+			"Should return false if duplicates NOT in array..",
+			async () => {
+				const [ADDR_1, ADDR_2] = await ethers.getSigners();
+
+				await yieldSyncV1UtilityArray.containsDuplicates([ADDR_1.address, ADDR_2.address]);
+
+				expect(await yieldSyncV1UtilityArray.duplicateFound()).to.be.equal(false);
+			}
+		);
 	});
-	
+
 	describe("function removeDuplicates()", async () => {
 		it(
 			"Should remove duplicates from an array..",
 			async () => {
 				const [ADDR_1] = await ethers.getSigners();
 
-				await yieldSyncV1UtilityArray.removeDuplicates(
-					[ADDR_1.address, ADDR_1.address]
-				);
+				await yieldSyncV1UtilityArray.removeDuplicates([ADDR_1.address, ADDR_1.address]);
 
 				let result = await yieldSyncV1UtilityArray.uniqueAddresses();				
 
