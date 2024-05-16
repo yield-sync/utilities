@@ -27,7 +27,7 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 	});
 
 
-	describe("function quickSort()", async () => {
+	describe("function sort()", async () => {
 		it(
 			"Should sort an unordered array..",
 			async () => {
@@ -37,7 +37,7 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 				const ADDR_2_IN_BASE_10 = parseInt(ADDR_2.address, 16)
 
 				// Simple
-				let result = await yieldSyncV1UtilityArray.quickSort(
+				let result = await yieldSyncV1UtilityArray.sort(
 					[ADDR_1.address, ADDR_1.address, ethers.constants.AddressZero]
 				);
 
@@ -46,7 +46,7 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 				expect(result[2]).to.be.equal(ADDR_1.address);
 				
 				// With multiple addresses
-				let result2 = await yieldSyncV1UtilityArray.quickSort(
+				let result2 = await yieldSyncV1UtilityArray.sort(
 					[ADDR_2.address, ADDR_1.address, ethers.constants.AddressZero]
 				);
 

@@ -4,29 +4,51 @@ pragma solidity ^0.8.18;
 
 interface IYieldSyncV1UtilityArray
 {
+	/**
+	* @notice Duplicates Found
+	*/
 	function duplicateFound()
 		external
 		view
 		returns (bool)
 	;
 
+
+	/**
+	* @notice Sort
+	* @param _array {address[]}
+	*/
+	function sort(address[] memory _array)
+		external
+		pure
+		returns (address[] memory)
+	;
+
+
+	/**
+	* @notice Unique Addresses
+	*/
 	function uniqueAddresses()
 		external
 		view
 		returns (address[] memory)
 	;
 
-	function quickSort(address[] memory _array)
-		external
-		returns (address[] memory)
-	;
 
+	/**
+	* @notice Check if contains duplicates
+	* @param _array {address[]}
+	*/
 	function containsDuplicates(address[] memory _array)
 		external
 		returns (bool duplicateFound_)
 	;
 
-	function removeDuplicates(address[] memory array)
+	/**
+	* @notice Remove Duplicates from array
+	* @param _array {address[]}
+	*/
+	function removeDuplicates(address[] memory _array)
 		external
 		returns (address[] memory)
 	;

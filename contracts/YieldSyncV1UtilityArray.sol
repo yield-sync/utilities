@@ -10,10 +10,10 @@ contract YieldSyncV1UtilityArray is
 {
 	address[] internal _uniqueAddresses;
 
+	/// @inheritdoc IYieldSyncV1UtilityArray
 	bool public override duplicateFound;
 
-	// Mapping to store the existence of addresses in _uniqueAddresses
-	mapping(address => bool) private _seen;
+	mapping(address => bool) internal _seen;
 
 
 	constructor ()
@@ -22,16 +22,7 @@ contract YieldSyncV1UtilityArray is
 	}
 
 
-	function uniqueAddresses()
-		public
-		view
-		override
-		returns (address[] memory)
-	{
-		return _uniqueAddresses;
-	}
-
-	function _quickSort(address[] memory _array, uint256 _left, uint256 _right)
+	function _sort(address[] memory _array, uint256 _left, uint256 _right)
 		internal
 		pure
 	{
@@ -88,28 +79,41 @@ contract YieldSyncV1UtilityArray is
 
 		if (_left < j)
 		{
-			_quickSort(_array, _left, j);
+			_sort(_array, _left, j);
 		}
 
 		if (i < _right)
 		{
-			_quickSort(_array, i, _right);
+			_sort(_array, i, _right);
 		}
 	}
 
 
-	function quickSort(address[] memory _array)
+	/// @inheritdoc IYieldSyncV1UtilityArray
+	function sort(address[] memory _array)
 		public
 		pure
 		override
 		returns (address[] memory)
 	{
-		_quickSort(_array, 0, uint256(_array.length - 1));
+		_sort(_array, 0, uint256(_array.length - 1));
 
 		return _array;
 	}
 
 
+	/// @inheritdoc IYieldSyncV1UtilityArray
+	function uniqueAddresses()
+		public
+		view
+		override
+		returns (address[] memory)
+	{
+		return _uniqueAddresses;
+	}
+
+
+	/// @inheritdoc IYieldSyncV1UtilityArray
 	function containsDuplicates(address[] memory _array)
 		public
 		override
@@ -129,7 +133,6 @@ contract YieldSyncV1UtilityArray is
 			}
 		}
 
-		// Reset the seen mapping for the next call
 		for (uint256 i = 0; i < _uniqueAddresses.length; i++)
 		{
 			_seen[_uniqueAddresses[i]] = false;
@@ -138,13 +141,12 @@ contract YieldSyncV1UtilityArray is
 		return duplicateFound;
 	}
 
-	// Function to remove duplicates from an array of addresses and update state
+	/// @inheritdoc IYieldSyncV1UtilityArray
 	function removeDuplicates(address[] memory _array)
 		public
 		override
 		returns (address[] memory)
 	{
-		// Clear existing data
 		delete _uniqueAddresses;
 
 		for (uint256 i = 0; i < _array.length; i++)
@@ -157,7 +159,6 @@ contract YieldSyncV1UtilityArray is
 			}
 		}
 
-		// Reset the seen mapping for the next call
 		for (uint256 i = 0; i < _uniqueAddresses.length; i++)
 		{
 			_seen[_uniqueAddresses[i]] = false;
