@@ -31,8 +31,12 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 		it(
 			"Should sort an unordered array..",
 			async () => {
-				const [ADDR_1] = await ethers.getSigners();
+				const [ADDR_1, ADDR_2] = await ethers.getSigners();
 
+				const ADDR_1_IN_BASE_10 = parseInt(ADDR_1.address, 16)
+				const ADDR_2_IN_BASE_10 = parseInt(ADDR_2.address, 16)
+
+				// Simple
 				let result = await yieldSyncV1UtilityArray.quickSort(
 					[ADDR_1.address, ADDR_1.address, ethers.constants.AddressZero]
 				);
@@ -40,6 +44,24 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 				expect(result[0]).to.be.equal(ethers.constants.AddressZero);
 				expect(result[1]).to.be.equal(ADDR_1.address);
 				expect(result[2]).to.be.equal(ADDR_1.address);
+				
+				// With multiple addresses
+				let result2 = await yieldSyncV1UtilityArray.quickSort(
+					[ADDR_2.address, ADDR_1.address, ethers.constants.AddressZero]
+				);
+
+				expect(result2[0]).to.be.equal(ethers.constants.AddressZero);
+
+				if (ADDR_1_IN_BASE_10 > ADDR_2_IN_BASE_10)
+				{
+					expect(result2[1]).to.be.equal(ADDR_2.address);
+					expect(result2[2]).to.be.equal(ADDR_1.address);
+				}
+				else
+				{
+					expect(result2[1]).to.be.equal(ADDR_1.address);
+					expect(result2[2]).to.be.equal(ADDR_2.address);
+				}
 			}
 		);
 	});
