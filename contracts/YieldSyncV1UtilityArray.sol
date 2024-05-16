@@ -8,11 +8,28 @@ import { IYieldSyncV1UtilityArray } from "./interface/IYieldSyncV1UtilityArray.s
 contract YieldSyncV1UtilityArray is
 	IYieldSyncV1UtilityArray
 {
-	address[] public uniqueAddresses;
+	address[] internal _uniqueAddresses;
 
-	// Mapping to store the existence of addresses in uniqueAddresses
+	bool public override duplicateFound;
+
+	// Mapping to store the existence of addresses in _uniqueAddresses
 	mapping(address => bool) private _seen;
 
+
+	constructor ()
+	{
+		duplicateFound = false;
+	}
+
+
+	function uniqueAddresses()
+		public
+		view
+		override
+		returns (address[] memory)
+	{
+		return _uniqueAddresses;
+	}
 
 	function _quickSort(address[] memory _array, uint256 _left, uint256 _right)
 		internal
@@ -84,6 +101,7 @@ contract YieldSyncV1UtilityArray is
 	function quickSort(address[] memory _array)
 		public
 		pure
+		override
 		returns (address[] memory)
 	{
 		_quickSort(_array, 0, uint256(_array.length - 1));
@@ -92,30 +110,59 @@ contract YieldSyncV1UtilityArray is
 	}
 
 
-	// Function to remove duplicates from an array of addresses and update state
-	function removeDuplicates(address[] memory array)
+	function containsDuplicates(address[] memory _array)
 		public
-		returns (address[] memory)
+		override
+		returns (bool)
 	{
-		// Clear existing data
-		delete uniqueAddresses;
+		duplicateFound = false;
 
-		for (uint256 i = 0; i < array.length; i++)
+		for (uint256 i = 0; i < _array.length; i++)
 		{
-			if (!_seen[array[i]])
+			if (!_seen[_array[i]])
 			{
-				_seen[array[i]] = true;
-
-				uniqueAddresses.push(array[i]);
+				_seen[_array[i]] = true;
+			}
+			else
+			{
+				duplicateFound = true;
 			}
 		}
 
 		// Reset the seen mapping for the next call
-		for (uint256 i = 0; i < uniqueAddresses.length; i++)
+		for (uint256 i = 0; i < _uniqueAddresses.length; i++)
 		{
-			_seen[uniqueAddresses[i]] = false;
+			_seen[_uniqueAddresses[i]] = false;
 		}
 
-		return uniqueAddresses;
+		return duplicateFound;
+	}
+
+	// Function to remove duplicates from an array of addresses and update state
+	function removeDuplicates(address[] memory _array)
+		public
+		override
+		returns (address[] memory)
+	{
+		// Clear existing data
+		delete _uniqueAddresses;
+
+		for (uint256 i = 0; i < _array.length; i++)
+		{
+			if (!_seen[_array[i]])
+			{
+				_seen[_array[i]] = true;
+
+				_uniqueAddresses.push(_array[i]);
+			}
+		}
+
+		// Reset the seen mapping for the next call
+		for (uint256 i = 0; i < _uniqueAddresses.length; i++)
+		{
+			_seen[_uniqueAddresses[i]] = false;
+		}
+
+		return _uniqueAddresses;
 	}
 }
