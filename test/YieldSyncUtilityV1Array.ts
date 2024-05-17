@@ -6,24 +6,24 @@ import { Contract, ContractFactory } from "ethers";
 
 
 const stageContracts = async () => {
-	const YieldSyncV1UtilityArray: ContractFactory = await ethers.getContractFactory("YieldSyncV1UtilityArray");
+	const YieldSyncUtilityV1Array: ContractFactory = await ethers.getContractFactory("YieldSyncUtilityV1Array");
 
-	const yieldSyncV1UtilityArray: Contract = await (await YieldSyncV1UtilityArray.deploy()).deployed();
+	const yieldSyncUtilityV1Array: Contract = await (await YieldSyncUtilityV1Array.deploy()).deployed();
 
 	return {
-		yieldSyncV1UtilityArray
+		yieldSyncUtilityV1Array
 	};
 }
 
 
-describe("YieldSyncV1UtilityArray.sol - Main", async () => {
-	let yieldSyncV1UtilityArray: Contract;
+describe("YieldSyncUtilityV1Array.sol - Main", async () => {
+	let yieldSyncUtilityV1Array: Contract;
 
 
 	beforeEach("[beforeEach] Set up contracts..", async () => {
 		const stagedContracts = await stageContracts();
 
-		yieldSyncV1UtilityArray = stagedContracts.yieldSyncV1UtilityArray
+		yieldSyncUtilityV1Array = stagedContracts.yieldSyncUtilityV1Array
 	});
 
 
@@ -37,7 +37,7 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 				const ADDR_2_IN_BASE_10 = parseInt(ADDR_2.address, 16)
 
 				// Simple
-				let result = await yieldSyncV1UtilityArray.sort(
+				let result = await yieldSyncUtilityV1Array.sort(
 					[ADDR_1.address, ADDR_1.address, ethers.constants.AddressZero]
 				);
 
@@ -46,7 +46,7 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 				expect(result[2]).to.be.equal(ADDR_1.address);
 				
 				// With multiple addresses
-				let result2 = await yieldSyncV1UtilityArray.sort(
+				let result2 = await yieldSyncUtilityV1Array.sort(
 					[ADDR_2.address, ADDR_1.address, ethers.constants.AddressZero]
 				);
 
@@ -72,9 +72,9 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 			async () => {
 				const [ADDR_1] = await ethers.getSigners();
 
-				await yieldSyncV1UtilityArray.containsDuplicates([ADDR_1.address, ADDR_1.address]);
+				await yieldSyncUtilityV1Array.containsDuplicates([ADDR_1.address, ADDR_1.address]);
 
-				expect(await yieldSyncV1UtilityArray.duplicateFound()).to.be.equal(true);
+				expect(await yieldSyncUtilityV1Array.duplicateFound()).to.be.equal(true);
 			}
 		);
 
@@ -83,9 +83,9 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 			async () => {
 				const [ADDR_1, ADDR_2] = await ethers.getSigners();
 
-				await yieldSyncV1UtilityArray.containsDuplicates([ADDR_1.address, ADDR_2.address]);
+				await yieldSyncUtilityV1Array.containsDuplicates([ADDR_1.address, ADDR_2.address]);
 
-				expect(await yieldSyncV1UtilityArray.duplicateFound()).to.be.equal(false);
+				expect(await yieldSyncUtilityV1Array.duplicateFound()).to.be.equal(false);
 			}
 		);
 	});
@@ -96,9 +96,9 @@ describe("YieldSyncV1UtilityArray.sol - Main", async () => {
 			async () => {
 				const [ADDR_1] = await ethers.getSigners();
 
-				await yieldSyncV1UtilityArray.removeDuplicates([ADDR_1.address, ADDR_1.address]);
+				await yieldSyncUtilityV1Array.removeDuplicates([ADDR_1.address, ADDR_1.address]);
 
-				let result = await yieldSyncV1UtilityArray.uniqueAddresses();				
+				let result = await yieldSyncUtilityV1Array.uniqueAddresses();				
 
 				expect(result.length).to.be.equal(1);
 				expect(result[0]).to.be.equal(ADDR_1.address);

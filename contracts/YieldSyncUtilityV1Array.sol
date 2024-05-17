@@ -2,15 +2,15 @@
 pragma solidity ^0.8.18;
 
 
-import { IYieldSyncV1UtilityArray } from "./interface/IYieldSyncV1UtilityArray.sol";
+import { IYieldSyncUtilityV1Array } from "./interface/IYieldSyncUtilityV1Array.sol";
 
 
-contract YieldSyncV1UtilityArray is
-	IYieldSyncV1UtilityArray
+contract YieldSyncUtilityV1Array is
+	IYieldSyncUtilityV1Array
 {
 	address[] internal _uniqueAddresses;
 
-	/// @inheritdoc IYieldSyncV1UtilityArray
+	/// @inheritdoc IYieldSyncUtilityV1Array
 	bool public override duplicateFound;
 
 	mapping(address => bool) internal _seen;
@@ -89,7 +89,7 @@ contract YieldSyncV1UtilityArray is
 	}
 
 
-	/// @inheritdoc IYieldSyncV1UtilityArray
+	/// @inheritdoc IYieldSyncUtilityV1Array
 	function sort(address[] memory _array)
 		public
 		pure
@@ -102,7 +102,7 @@ contract YieldSyncV1UtilityArray is
 	}
 
 
-	/// @inheritdoc IYieldSyncV1UtilityArray
+	/// @inheritdoc IYieldSyncUtilityV1Array
 	function uniqueAddresses()
 		public
 		view
@@ -113,7 +113,7 @@ contract YieldSyncV1UtilityArray is
 	}
 
 
-	/// @inheritdoc IYieldSyncV1UtilityArray
+	/// @inheritdoc IYieldSyncUtilityV1Array
 	function containsDuplicates(address[] memory _array)
 		public
 		override
@@ -141,7 +141,7 @@ contract YieldSyncV1UtilityArray is
 		return duplicateFound;
 	}
 
-	/// @inheritdoc IYieldSyncV1UtilityArray
+	/// @inheritdoc IYieldSyncUtilityV1Array
 	function removeDuplicates(address[] memory _array)
 		public
 		override
