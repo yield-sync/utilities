@@ -1,6 +1,6 @@
 {
 	"name": "@yield-sync/utilities",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "",
 	"main": "index.js",
 	"scripts": {},
@@ -17,9 +17,7 @@
 		"@nomiclabs/hardhat-solhint": "^3.0.0",
 		"@openzeppelin/contracts": "^4.6.0",
 		"@openzeppelin/contracts-upgradeable": "^4.6.0",
-		"dotenv": "^16.0.1"
-	},
-	"devDependencies": {
-		"hardhat": "^2.10.1"
+		"dotenv": "^16.0.1",
+		"hardhat": "^2.22.4"
 	}
 }
