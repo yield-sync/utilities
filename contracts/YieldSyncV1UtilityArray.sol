@@ -22,7 +22,7 @@ contract YieldSyncV1UtilityArray is
 	}
 
 
-	function _sort(address[] memory _array, uint256 _left, uint256 _right)
+	function _quickSort(address[] memory _array, uint256 _left, uint256 _right)
 		internal
 		pure
 	{
@@ -79,12 +79,12 @@ contract YieldSyncV1UtilityArray is
 
 		if (_left < j)
 		{
-			_sort(_array, _left, j);
+			_quickSort(_array, _left, j);
 		}
 
 		if (i < _right)
 		{
-			_sort(_array, i, _right);
+			_quickSort(_array, i, _right);
 		}
 	}
 
@@ -96,7 +96,7 @@ contract YieldSyncV1UtilityArray is
 		override
 		returns (address[] memory)
 	{
-		_sort(_array, 0, uint256(_array.length - 1));
+		_quickSort(_array, 0, uint256(_array.length - 1));
 
 		return _array;
 	}
