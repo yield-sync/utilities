@@ -88,6 +88,22 @@ describe("YieldSyncUtilityV1Array.sol - Main", async () => {
 				expect(await yieldSyncUtilityV1Array.duplicateFound()).to.be.equal(false);
 			}
 		);
+
+		it(
+			"Should clear seen mapping after utilzing..",
+			async () => {
+				const [ADDR_1, ADDR_2] = await ethers.getSigners();
+
+				await yieldSyncUtilityV1Array.containsDuplicates([ADDR_1.address, ADDR_2.address]);
+
+				expect(await yieldSyncUtilityV1Array.duplicateFound()).to.be.equal(false);
+				
+				expect(await yieldSyncUtilityV1Array.seen(ADDR_1.address)).to.be.equal(false);
+				
+				expect(await yieldSyncUtilityV1Array.seen(ADDR_2.address)).to.be.equal(false);
+			}
+		);
+
 	});
 
 	describe("function removeDuplicates()", async () => {

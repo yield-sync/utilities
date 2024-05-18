@@ -13,7 +13,7 @@ contract YieldSyncUtilityV1Array is
 	/// @inheritdoc IYieldSyncUtilityV1Array
 	bool public override duplicateFound;
 
-	mapping(address => bool) internal _seen;
+	mapping(address => bool) public seen;
 
 
 	constructor ()
@@ -123,19 +123,21 @@ contract YieldSyncUtilityV1Array is
 
 		for (uint256 i = 0; i < _array.length; i++)
 		{
-			if (!_seen[_array[i]])
+			if (!seen[_array[i]])
 			{
-				_seen[_array[i]] = true;
+				seen[_array[i]] = true;
 			}
 			else
 			{
 				duplicateFound = true;
+
+				break;
 			}
 		}
 
-		for (uint256 i = 0; i < _uniqueAddresses.length; i++)
+		for (uint256 i = 0; i < _array.length; i++)
 		{
-			_seen[_uniqueAddresses[i]] = false;
+			seen[_array[i]] = false;
 		}
 
 		return duplicateFound;
@@ -151,9 +153,9 @@ contract YieldSyncUtilityV1Array is
 
 		for (uint256 i = 0; i < _array.length; i++)
 		{
-			if (!_seen[_array[i]])
+			if (!seen[_array[i]])
 			{
-				_seen[_array[i]] = true;
+				seen[_array[i]] = true;
 
 				_uniqueAddresses.push(_array[i]);
 			}
@@ -161,7 +163,7 @@ contract YieldSyncUtilityV1Array is
 
 		for (uint256 i = 0; i < _uniqueAddresses.length; i++)
 		{
-			_seen[_uniqueAddresses[i]] = false;
+			seen[_uniqueAddresses[i]] = false;
 		}
 
 		return _uniqueAddresses;
